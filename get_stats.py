@@ -159,8 +159,8 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
         seconds_ignore += (last - first)
         if is_day:
             print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
-    # return total values just for the non-ignored ones
-    return (visits, seconds)
+    # return total values
+    return (visits, seconds, visits_ignore, seconds_ignore)
 
 #
 # gets data sent for a given day
@@ -200,9 +200,10 @@ if scope == 'day':
     day = "%02d/%s" % (int(daynum), months[month])
     daylines = get_day_loglines(day, monthlines)
     ips = get_day_ips(daylines)
-    (visits, seconds) = get_day_visits(ips, daylines, True, ignored_ips)
+    (visits, seconds, ignored_visits, ignored_seconds) = get_day_visits(ips, daylines, True, ignored_ips)
     data = get_day_data(daylines, True)
-    print "Visits: %d Seconds: %d Data: %d" % (visits, seconds, data)
+    print "Visits Seconds Data Ignored_visits Ignored_seconds" % (visits, seconds, ignored_visits, ignored_seconds, data)
+    print "%d %d %d %d %d" % (visits, seconds, data, ignored_visits, ignored_seconds)
 
 elif scope == 'month':
     year = sys.argv[2]
