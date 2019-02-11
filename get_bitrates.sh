@@ -1,6 +1,9 @@
 #!/bin/bash
-# 
+#
 # create a list of all current videos and their bitrates
+#
+# This is not used as of 2018 
+#
 ########################################################
 
 if [[ -z $1 ]]; then

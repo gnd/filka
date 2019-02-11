@@ -77,7 +77,7 @@ def get_day_ips(day_loglines):
     return ips
 
 #
-# gets video bitrates
+# gets video bitrates, not used as of 2018
 #
 def get_bitrates():
     bitrates = {}
@@ -187,6 +187,7 @@ elif scope == 'all':
     total_visits = 0
     total_seconds = 0
     total_data = 0
+    print "Month Visits Seconds Data"
     for month in months:
         logfile = "%s_%s.log" % (month, year)
         monthlines = get_month_loglines(logfile)
@@ -202,11 +203,11 @@ elif scope == 'all':
             month_visits += visits
             month_seconds += seconds
             month_data += data
-        print "%s Visits: %d Seconds: %d Data: %d" % (month, month_visits, month_seconds, month_data)
+        print "%s %d %d %d" % (month, month_visits, month_seconds, month_data)
         total_visits += month_visits
         total_seconds += month_seconds
         total_data += month_data
-    print "%s Visits: %d Seconds: %d Data: %d" % (month, total_visits, total_seconds, total_data)
+    print "%s %d %d %d" % ("Total", total_visits, total_seconds, total_data)
 
 else:
     print "Usage: %s <day | month | all> <selectors>" % (sys.argv[0])
