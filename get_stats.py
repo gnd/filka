@@ -215,19 +215,23 @@ elif scope == 'month':
     monthlines = get_month_loglines(logfile)
     total_visits = 0
     total_seconds = 0
+    total_ignored_visits = 0
+    total_ignored_seconds = 0
     total_data = 0
-    print "Day Visits Seconds Data"
+    print "Day Visits Seconds Data Ignored_visits Ignored_seconds"
     for daynum in range(1, days[months[month]]):
         day = "%02d/%s" % (daynum, months[month])
         daylines = get_day_loglines(day, monthlines)
         ips = get_day_ips(daylines)
-        (visits, seconds) = get_day_visits(ips, daylines, False, ignored_ips)
+        (visits, seconds, ignored_visits, ignored_seconds) = get_day_visits(ips, daylines, False, ignored_ips)
         data = get_day_data(daylines, False)
         total_visits += visits
         total_seconds += seconds
+        total_ignored_visits += ignored_visits
+        total_ignored_seconds += ignored_seconds
         total_data += data
-        print "%d %d %d %d" % (daynum, visits, seconds, data)
-    print "%s %d %d %d" % ("Total", total_visits, total_seconds, total_data)
+        print "%d %d %d %d %d %d" % (daynum, visits, seconds, data, ignored_visits, ignored_seconds)
+    print "%s %d %d %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds)
 
 elif scope == 'all':
     year = sys.argv[2]
