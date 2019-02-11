@@ -193,7 +193,7 @@ if scope == 'day':
     month = int(sys.argv[3])-1
     daynum = sys.argv[4]
     ignored_ips = []
-    if len(sys.argv > 5):
+    if len(sys.argv) > 5:
         ignored_ips = sys.argv[5].split(",")
     logfile = "%s_%s.log" % (months[month], year)
     monthlines = get_month_loglines(logfile)
@@ -208,7 +208,7 @@ elif scope == 'month':
     year = sys.argv[2]
     month = int(sys.argv[3])-1
     ignored_ips = []
-    if len(sys.argv > 4):
+    if len(sys.argv) > 4:
         ignored_ips = sys.argv[4].split(",")
     logfile = "%s_%s.log" % (months[month], year)
     monthlines = get_month_loglines(logfile)
@@ -231,7 +231,7 @@ elif scope == 'month':
 elif scope == 'all':
     year = sys.argv[2]
     ignored_ips = []
-    if len(sys.argv > 3):
+    if len(sys.argv) > 3:
         ignored_ips = sys.argv[3].split(",")
     total_visits = 0
     total_seconds = 0
