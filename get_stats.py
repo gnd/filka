@@ -94,6 +94,7 @@ def get_bitrates():
 def get_day_visits(ips, loglines, is_day):
     visits = 0;
     seconds = 0
+    print "IP first last seconds"
     for ip in ips:
         last = 0
         for line in loglines:
@@ -120,7 +121,7 @@ def get_day_visits(ips, loglines, is_day):
         # otherwise no more hits from IP, account for the visit
         seconds += (last - first)
         if is_day:
-            print "IP: %s first: %s last: %s seconds: %d" % (ip, first_str, last_str, (last - first))
+            print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
     return (visits, seconds)
 
 #
