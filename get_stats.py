@@ -170,6 +170,7 @@ elif scope == 'month':
     total_visits = 0
     total_seconds = 0
     total_data = 0
+    print "Day Visits Seconds Data"
     for daynum in range(1, days[months[month]]):
         day = "%02d/%s" % (daynum, months[month])
         daylines = get_day_loglines(day, monthlines)
@@ -179,8 +180,8 @@ elif scope == 'month':
         total_visits += visits
         total_seconds += seconds
         total_data += data
-        print "Day %d Visits: %d Seconds: %d Data: %d" % (daynum, visits, seconds, data)
-    print "Visits: %d Seconds: %d Data: %d" % (total_visits, total_seconds, total_data)
+        print "%d %d %d %d" % (daynum, visits, seconds, data)
+    print "%s %d %d %d" % ("Total", total_visits, total_seconds, total_data)
 
 elif scope == 'all':
     year = sys.argv[2]
