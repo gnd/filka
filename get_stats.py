@@ -91,9 +91,17 @@ def get_bitrates():
 #
 # gets count ips / seconds for a given day
 #
-def get_day_visits(ips, loglines, is_day):
-    visits = 0;
+def get_day_visits(ips, loglines, is_day, ignore_ips):
+    visits = 0
     seconds = 0
+    visits_ignore = 0
+    seconds_ignore = 0
+    # Remove ignored ips from the list
+    if len(ignore_ips) > 0:
+        for ip in ignore_ips:
+            if ip in ips:
+                ips.remove(ip)
+    # Process all IPs without the ignored ones
     print "IP first last seconds"
     for ip in ips:
         last = 0
@@ -122,6 +130,36 @@ def get_day_visits(ips, loglines, is_day):
         seconds += (last - first)
         if is_day:
             print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
+    # Now do the same for ignored IPs
+    print "Ignored_IP first last seconds"
+    for ip in ignore_ips:
+        last = 0
+        for line in loglines:
+            iptime = time.mktime(datetime.datetime.strptime(line.split()[3].replace("[",""), "%d/%b/%Y:%H:%M:%S").timetuple())
+            # this searches for the length of a given visit - if no last, its the moment when the IP shows up
+            if (ip in line) and (last == 0):
+                visits_ignore += 1
+                first = iptime
+                last = iptime
+                first_str = line.split()[3].replace("[","")
+                last_str = line.split()[3].replace("[","")
+            # we still see the IP, its not the first time and its part of the same visit
+            if (ip in line) and (iptime - last <= 5400) and (iptime - last > 0):
+                last = iptime
+                last_str = line.split()[3].replace("[","")
+            # in case we see ip after 5400 seconds, make it a new visit and finish & account for the old one
+            if (ip in line) and (iptime - last > 5400) and (last != 0):
+                seconds_ignore += (last - first)
+                visits_ignore+=1
+                first = iptime
+                first_str = line.split()[3].replace("[","")
+                last_str = line.split()[3].replace("[","")
+                last = iptime
+        # otherwise no more hits from IP, account for the visit
+        seconds_ignore += (last - first)
+        if is_day:
+            print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
+    # return total values just for the non-ignored ones
     return (visits, seconds)
 
 #
@@ -143,10 +181,10 @@ if len(sys.argv) > 1:
     scope = sys.argv[1]
 else:
     print "Usage: %s <day | month | all> <selectors>" % (sys.argv[0])
-    print "%s day <year> <month> <day>" % (sys.argv[0])
-    print "%s month <year> <month>" % (sys.argv[0])
-    print "%s all <year>" % (sys.argv[0])
-    print "eg.: %s day 2016 06 06" % (sys.argv[0])
+    print "%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0])
+    print "%s month <year> <month> <ignored_ips>" % (sys.argv[0])
+    print "%s all <year> <ignored_ips>" % (sys.argv[0])
+    print "eg.: %s day 2016 06 06 127.0.0.1,6.6.6.6" % (sys.argv[0])
     sys.exit()
 
 
@@ -154,18 +192,24 @@ if scope == 'day':
     year = sys.argv[2]
     month = int(sys.argv[3])-1
     daynum = sys.argv[4]
+    ignored_ips = []
+    if len(sys.argv > 5):
+        ignored_ips = sys.argv[5].split(",")
     logfile = "%s_%s.log" % (months[month], year)
     monthlines = get_month_loglines(logfile)
     day = "%02d/%s" % (int(daynum), months[month])
     daylines = get_day_loglines(day, monthlines)
     ips = get_day_ips(daylines)
-    (visits, seconds) = get_day_visits(ips, daylines, True)
+    (visits, seconds) = get_day_visits(ips, daylines, True, ignored_ips)
     data = get_day_data(daylines, True)
     print "Visits: %d Seconds: %d Data: %d" % (visits, seconds, data)
 
 elif scope == 'month':
     year = sys.argv[2]
     month = int(sys.argv[3])-1
+    ignored_ips = []
+    if len(sys.argv > 4):
+        ignored_ips = sys.argv[4].split(",")
     logfile = "%s_%s.log" % (months[month], year)
     monthlines = get_month_loglines(logfile)
     total_visits = 0
@@ -176,7 +220,7 @@ elif scope == 'month':
         day = "%02d/%s" % (daynum, months[month])
         daylines = get_day_loglines(day, monthlines)
         ips = get_day_ips(daylines)
-        (visits, seconds) = get_day_visits(ips, daylines, False)
+        (visits, seconds) = get_day_visits(ips, daylines, False, ignored_ips)
         data = get_day_data(daylines, False)
         total_visits += visits
         total_seconds += seconds
@@ -186,6 +230,9 @@ elif scope == 'month':
 
 elif scope == 'all':
     year = sys.argv[2]
+    ignored_ips = []
+    if len(sys.argv > 3):
+        ignored_ips = sys.argv[3].split(",")
     total_visits = 0
     total_seconds = 0
     total_data = 0
@@ -200,7 +247,7 @@ elif scope == 'all':
             day = "%02d/%s" % (daynum, month)
             daylines = get_day_loglines(day, monthlines)
             ips = get_day_ips(daylines)
-            (visits, seconds) = get_day_visits(ips, daylines, False)
+            (visits, seconds) = get_day_visits(ips, daylines, False, ignored_ips)
             data = get_day_data(daylines, False)
             month_visits += visits
             month_seconds += seconds
