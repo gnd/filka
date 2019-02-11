@@ -103,8 +103,6 @@ def get_bitrates():
 def get_day_visits(ips, loglines, is_day, ignore_ips):
     visits = 0
     seconds = 0
-    visits_ignore = 0
-    seconds_ignore = 0
     # Remove ignored ips from the list
     if len(ignore_ips) > 0:
         for ip in ignore_ips:
@@ -115,6 +113,7 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
         print "IP first last seconds"
     for ip in ips:
         last = 0
+        first = 0
         for line in loglines:
             iptime = time.mktime(datetime.datetime.strptime(line.split()[3].replace("[",""), "%d/%b/%Y:%H:%M:%S").timetuple())
             # this searches for the length of a given visit - if no last, its the moment when the IP shows up
@@ -141,10 +140,13 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
         if is_day:
             print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
     # Now do the same for ignored IPs
+    visits_ignore = 0
+    seconds_ignore = 0
     if is_day:
         print "Ignored_IP first last seconds"
     for ip in ignore_ips:
         last = 0
+        first = 0
         for line in loglines:
             iptime = time.mktime(datetime.datetime.strptime(line.split()[3].replace("[",""), "%d/%b/%Y:%H:%M:%S").timetuple())
             # this searches for the length of a given visit - if no last, its the moment when the IP shows up
