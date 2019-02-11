@@ -202,7 +202,7 @@ if scope == 'day':
     ips = get_day_ips(daylines)
     (visits, seconds, ignored_visits, ignored_seconds) = get_day_visits(ips, daylines, True, ignored_ips)
     data = get_day_data(daylines, True)
-    print "Visits Seconds Data Ignored_visits Ignored_seconds" % (visits, seconds, ignored_visits, ignored_seconds, data)
+    print "Visits Seconds Data Ignored_visits Ignored_seconds"
     print "%d %d %d %d %d" % (visits, seconds, data, ignored_visits, ignored_seconds)
 
 elif scope == 'month':
