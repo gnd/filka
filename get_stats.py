@@ -102,7 +102,8 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
             if ip in ips:
                 ips.remove(ip)
     # Process all IPs without the ignored ones
-    print "IP first last seconds"
+    if is_day:
+        print "IP first last seconds"
     for ip in ips:
         last = 0
         for line in loglines:
@@ -131,7 +132,8 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
         if is_day:
             print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
     # Now do the same for ignored IPs
-    print "Ignored_IP first last seconds"
+    if is_day:
+        print "Ignored_IP first last seconds"
     for ip in ignore_ips:
         last = 0
         for line in loglines:
