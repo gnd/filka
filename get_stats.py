@@ -282,7 +282,7 @@ elif scope == 'all':
         total_ignored_visits += month_ignored_visits
         total_ignored_seconds += month_ignored_seconds
         total_data += month_data
-    print "%s %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds)
+    print "%s %d %d %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds)
 
 else:
     print "Usage: %s <day | month | all> <selectors> <ignored_ips>" % (sys.argv[0])
