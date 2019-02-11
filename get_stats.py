@@ -251,6 +251,8 @@ elif scope == 'all':
         ignored_ips = sys.argv[3].split(",")
     total_visits = 0
     total_seconds = 0
+    total_ignored_visits = 0
+    total_ignored_seconds = 0
     total_data = 0
     print "Month Visits Seconds Data Ignored_visits Ignored_seconds"
     for month in months:
@@ -258,6 +260,8 @@ elif scope == 'all':
         monthlines = get_month_loglines(logfile)
         month_visits = 0
         month_seconds = 0
+        month_ignored_visits = 0
+        month_ignored_seconds = 0
         month_data = 0
         for daynum in range(1, days[month]):
             day = "%02d/%s" % (daynum, month)
