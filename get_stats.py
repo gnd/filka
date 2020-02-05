@@ -197,7 +197,7 @@ else:
     print "%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0])
     print "%s month <year> <month> <ignored_ips>" % (sys.argv[0])
     print "%s all <year> <ignored_ips>" % (sys.argv[0])
-    print "eg.: %s day 2016 06 06 127.0.0.1,6.6.6.6" % (sys.argv[0])
+    print "eg.: %s day 2016 06 06 ignored.ips" % (sys.argv[0])
     sys.exit()
 
 
@@ -207,7 +207,13 @@ if scope == 'day':
     daynum = sys.argv[4]
     ignored_ips = []
     if len(sys.argv) > 5:
-        ignored_ips = sys.argv[5].split(",")
+        print "Reading ignored IPS file"
+        ignored_ips_file = sys.argv[5]
+        f = file(ignored_ips_file, 'r')
+        tmp = f.readlines()
+        f.close()
+        for ip in tmp:
+            ignored_ips.append(ip.strip())
     logfile = "%s_%s.log" % (months[month], year)
     monthlines = get_month_loglines(logfile)
     day = "%02d/%s" % (int(daynum), months[month])
@@ -223,7 +229,13 @@ elif scope == 'month':
     month = int(sys.argv[3])-1
     ignored_ips = []
     if len(sys.argv) > 4:
-        ignored_ips = sys.argv[4].split(",")
+        print "Reading ignored IPS file"
+        ignored_ips_file = sys.argv[4]
+        f = file(ignored_ips_file, 'r')
+        tmp = f.readlines()
+        f.close()
+        for ip in tmp:
+            ignored_ips.append(ip.strip())
     logfile = "%s_%s.log" % (months[month], year)
     monthlines = get_month_loglines(logfile)
     total_visits = 0
@@ -250,7 +262,13 @@ elif scope == 'all':
     year = sys.argv[2]
     ignored_ips = []
     if len(sys.argv) > 3:
-        ignored_ips = sys.argv[3].split(",")
+        print "Reading ignored IPS file"
+        ignored_ips_file = sys.argv[3]
+        f = file(ignored_ips_file, 'r')
+        tmp = f.readlines()
+        f.close()
+        for ip in tmp:
+            ignored_ips.append(ip.strip())
     total_visits = 0
     total_seconds = 0
     total_ignored_visits = 0
@@ -289,4 +307,4 @@ else:
     print "%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0])
     print "%s month <year> <month> <ignored_ips>" % (sys.argv[0])
     print "%s all <year> <ignored_ips>" % (sys.argv[0])
-    print "eg.: %s day 2016 06 06 127.0.0.1,6.6.6.6" % (sys.argv[0])
+    print "eg.: %s day 2016 06 06 ignored.ips" % (sys.argv[0])
