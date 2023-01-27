@@ -21,5 +21,5 @@ fi
 MON=("Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec");
 for m in ${MON[@]}
 do
-	cat ../apache_access_log|grep $m"/"$YEAR | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
+	cat ../apache_access_log|grep -a $m"/"$YEAR | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
 done

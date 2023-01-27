@@ -1,4 +1,6 @@
 readme_gnd.txt
+stats_*
+old
 *.ips
 *.webips
 *.pyc

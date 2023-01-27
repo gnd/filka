@@ -44,7 +44,7 @@
               is almost one full day, which skews the statistics significantly. The ignored_ips option was added
               to account for this fact
 
-    gnd, 2017 - 2019
+    gnd, 2017 - 2023
 """
 
 import sys
@@ -110,7 +110,7 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
                 ips.remove(ip)
     # Process all IPs without the ignored ones
     if is_day:
-        print "IP first last seconds"
+        print("IP first last seconds")
     for ip in ips:
         last = 0
         first = 0
@@ -138,12 +138,12 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
         # otherwise no more hits from IP, account for the visit
         seconds += (last - first)
         if is_day:
-            print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
+            print("%s %s %s %d" % (ip, first_str, last_str, (last - first)))
     # Now do the same for ignored IPs
     visits_ignore = 0
     seconds_ignore = 0
     if is_day:
-        print "Ignored_IP first last seconds"
+        print("Ignored_IP first last seconds")
     for ip in ignore_ips:
         last = 0
         first = 0
@@ -171,7 +171,7 @@ def get_day_visits(ips, loglines, is_day, ignore_ips):
         # otherwise no more hits from IP, account for the visit
         seconds_ignore += (last - first)
         if is_day:
-            print "%s %s %s %d" % (ip, first_str, last_str, (last - first))
+            print("%s %s %s %d" % (ip, first_str, last_str, (last - first)))
     # return total values
     return (visits, seconds, visits_ignore, seconds_ignore)
 
@@ -184,7 +184,7 @@ def get_day_data(loglines, is_day):
         bytes_out = int(line.split()[10])
         data += bytes_out
     if is_day:
-        print "Transferred: %d" % (data)
+        print("Transferred: %d" % (data))
     return (data)
 
 #
@@ -193,11 +193,11 @@ def get_day_data(loglines, is_day):
 if len(sys.argv) > 1:
     scope = sys.argv[1]
 else:
-    print "Usage: %s <day | month | all> <selectors>" % (sys.argv[0])
-    print "%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0])
-    print "%s month <year> <month> <ignored_ips>" % (sys.argv[0])
-    print "%s all <year> <ignored_ips>" % (sys.argv[0])
-    print "eg.: %s day 2016 06 06 ignored.ips" % (sys.argv[0])
+    print("Usage: %s <day | month | all> <selectors>" % (sys.argv[0]))
+    print("%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0]))
+    print("%s month <year> <month> <ignored_ips>" % (sys.argv[0]))
+    print("%s all <year> <ignored_ips>" % (sys.argv[0]))
+    print("eg.: %s day 2016 06 06 ignored.ips" % (sys.argv[0]))
     sys.exit()
 
 
@@ -207,7 +207,7 @@ if scope == 'day':
     daynum = sys.argv[4]
     ignored_ips = []
     if len(sys.argv) > 5:
-        print "Reading ignored IPS file"
+        print("Reading ignored IPS file")
         ignored_ips_file = sys.argv[5]
         f = file(ignored_ips_file, 'r')
         tmp = f.readlines()
@@ -221,15 +221,15 @@ if scope == 'day':
     ips = get_day_ips(daylines)
     (visits, seconds, ignored_visits, ignored_seconds) = get_day_visits(ips, daylines, True, ignored_ips)
     data = get_day_data(daylines, True)
-    print "Visits Seconds Data Ignored_visits Ignored_seconds"
-    print "%d %d %d %d %d" % (visits, seconds, data, ignored_visits, ignored_seconds)
+    print("Visits Seconds Data Ignored_visits Ignored_seconds")
+    print("%d %d %d %d %d" % (visits, seconds, data, ignored_visits, ignored_seconds))
 
 elif scope == 'month':
     year = sys.argv[2]
     month = int(sys.argv[3])-1
     ignored_ips = []
     if len(sys.argv) > 4:
-        print "Reading ignored IPS file"
+        print("Reading ignored IPS file")
         ignored_ips_file = sys.argv[4]
         f = file(ignored_ips_file, 'r')
         tmp = f.readlines()
@@ -243,7 +243,7 @@ elif scope == 'month':
     total_ignored_visits = 0
     total_ignored_seconds = 0
     total_data = 0
-    print "Day Visits Seconds Data Ignored_visits Ignored_seconds"
+    print("Day Visits Seconds Data Ignored_visits Ignored_seconds")
     for daynum in range(1, days[months[month]]):
         day = "%02d/%s" % (daynum, months[month])
         daylines = get_day_loglines(day, monthlines)
@@ -255,14 +255,14 @@ elif scope == 'month':
         total_ignored_visits += ignored_visits
         total_ignored_seconds += ignored_seconds
         total_data += data
-        print "%d %d %d %d %d %d" % (daynum, visits, seconds, data, ignored_visits, ignored_seconds)
-    print "%s %d %d %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds)
+        print("%d %d %d %d %d %d" % (daynum, visits, seconds, data, ignored_visits, ignored_seconds))
+    print("%s %d %d %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds))
 
 elif scope == 'all':
     year = sys.argv[2]
     ignored_ips = []
     if len(sys.argv) > 3:
-        print "Reading ignored IPS file"
+        print("Reading ignored IPS file")
         ignored_ips_file = sys.argv[3]
         f = file(ignored_ips_file, 'r')
         tmp = f.readlines()
@@ -274,7 +274,7 @@ elif scope == 'all':
     total_ignored_visits = 0
     total_ignored_seconds = 0
     total_data = 0
-    print "Month Visits Seconds Data Ignored_visits Ignored_seconds"
+    print("Month Visits Seconds Data Ignored_visits Ignored_seconds")
     for month in months:
         logfile = "%s_%s.log" % (month, year)
         monthlines = get_month_loglines(logfile)
@@ -294,17 +294,17 @@ elif scope == 'all':
             month_ignored_visits += ignored_visits
             month_ignored_seconds += ignored_seconds
             month_data += data
-        print "%s %d %d %d %d %d" % (month, month_visits, month_seconds, month_data, month_ignored_visits, month_ignored_seconds)
+        print("%s %d %d %d %d %d" % (month, month_visits, month_seconds, month_data, month_ignored_visits, month_ignored_seconds))
         total_visits += month_visits
         total_seconds += month_seconds
         total_ignored_visits += month_ignored_visits
         total_ignored_seconds += month_ignored_seconds
         total_data += month_data
-    print "%s %d %d %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds)
+    print("%s %d %d %d %d %d" % ("Total", total_visits, total_seconds, total_data, total_ignored_visits, total_ignored_seconds))
 
 else:
-    print "Usage: %s <day | month | all> <selectors> <ignored_ips>" % (sys.argv[0])
-    print "%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0])
-    print "%s month <year> <month> <ignored_ips>" % (sys.argv[0])
-    print "%s all <year> <ignored_ips>" % (sys.argv[0])
-    print "eg.: %s day 2016 06 06 ignored.ips" % (sys.argv[0])
+    print("Usage: %s <day | month | all> <selectors> <ignored_ips>" % (sys.argv[0]))
+    print("%s day <year> <month> <day> <ignored_ips>" % (sys.argv[0]))
+    print("%s month <year> <month> <ignored_ips>" % (sys.argv[0]))
+    print("%s all <year> <ignored_ips>" % (sys.argv[0]))
+    print("eg.: %s day 2016 06 06 ignored.ips" % (sys.argv[0]))
