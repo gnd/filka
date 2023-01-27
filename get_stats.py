@@ -59,7 +59,7 @@ months = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', '
 # gets loglines for a given month
 #
 def get_month_loglines(logfile):
-    f = file(logfile, 'r')
+    f = open(logfile, 'r')
     lines = f.readlines()
     f.close()
     return lines
@@ -90,7 +90,7 @@ def get_day_ips(day_loglines):
 #
 def get_bitrates():
     bitrates = {}
-    f = file('video_bitrates.txt','r')
+    f = open('video_bitrates.txt','r')
     vlines = f.readlines()
     f.close()
     for line in vlines:
@@ -209,7 +209,7 @@ if scope == 'day':
     if len(sys.argv) > 5:
         print("Reading ignored IPS file")
         ignored_ips_file = sys.argv[5]
-        f = file(ignored_ips_file, 'r')
+        f = open(ignored_ips_file, 'r')
         tmp = f.readlines()
         f.close()
         for ip in tmp:
@@ -231,7 +231,7 @@ elif scope == 'month':
     if len(sys.argv) > 4:
         print("Reading ignored IPS file")
         ignored_ips_file = sys.argv[4]
-        f = file(ignored_ips_file, 'r')
+        f = open(ignored_ips_file, 'r')
         tmp = f.readlines()
         f.close()
         for ip in tmp:
@@ -264,7 +264,7 @@ elif scope == 'all':
     if len(sys.argv) > 3:
         print("Reading ignored IPS file")
         ignored_ips_file = sys.argv[3]
-        f = file(ignored_ips_file, 'r')
+        f = open(ignored_ips_file, 'r')
         tmp = f.readlines()
         f.close()
         for ip in tmp:
