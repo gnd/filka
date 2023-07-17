@@ -29,7 +29,7 @@ MON=("Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec");
 for m in ${MON[@]}
 do
 	if [[ $USE_EXCLUDE == "1" ]]; then
-		cat ../nginx_access_log|grep -a $m"/"$YEAR -vf $EXCLUDE_FILE | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
+		cat ../nginx_access_log|grep -a $m"/"$YEAR | grep -vf $EXCLUDE_FILE | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
 	else
 		cat ../nginx_access_log|grep -a $m"/"$YEAR | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
 	fi
