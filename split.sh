@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# splits Apache logfile into monthly parts
+# splits Nginx logfile into monthly parts
 ##########################################
 
 if [[ -z "$1" ]]; then
@@ -21,5 +21,5 @@ fi
 MON=("Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec");
 for m in ${MON[@]}
 do
-	cat ../apache_access_log|grep -a $m"/"$YEAR | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
+	cat ../nginx_access_log|grep -a $m"/"$YEAR | tee -a $STATDIR/$YEAR"_access_log" > $STATDIR/$m"_"$YEAR".log"
 done

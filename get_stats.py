@@ -3,7 +3,7 @@
 
 """ get_stats.py
 
-    This parses apache logfiles for number of visits / seconds spent watching / data transferred
+    This parses nginx logfiles for number of visits / seconds spent watching / data transferred
     logfiles are in the form (use split.sh):
         Jan_Year.log
         Feb_Year.log
@@ -70,7 +70,7 @@ def get_month_loglines(logfile):
 def get_day_loglines(day, month_loglines):
     daylines = []
     for line in month_loglines:
-        if (day in line) and ("mp4" in line) and not ('HTTP/1.1" 404' in line) and (len(line.split()) == 12):
+        if (day in line) and ("mp4" in line) and not ('HTTP/1.1" 404' in line) and (len(line.split()) >= 12):
             daylines.append(line)
     return daylines
 
@@ -81,7 +81,7 @@ def get_day_loglines(day, month_loglines):
 def get_day_ips(day_loglines):
     ips = []
     for line in day_loglines:
-        if (line.split()[0] not in ips and (len(line.split()) == 12)):
+        if (line.split()[0] not in ips and (len(line.split()) >= 12)):
             ips.append(line.split()[0])
     return ips
 
