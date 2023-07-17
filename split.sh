@@ -16,7 +16,7 @@ if [[ ! -z "$2" ]]; then
 	EXCLUDE_FILE=$2
 	USE_EXCLUDE=1
 	echo "Using IP exclude list from $EXCLUDE_FILE"
-else
+fi
 
 ## clean old data (if any)
 if [[ -d $STATDIR ]]; then
